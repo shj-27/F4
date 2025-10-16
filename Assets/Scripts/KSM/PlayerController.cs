@@ -20,12 +20,14 @@ public class PlayerController : MonoBehaviour
         {
             pausePanel.SetActive(false);
         }
+        // 게임 시작 시 TimeScale을 1로 설정 (GameManager의 RestartGame도 동일하게 동작해야 함)
         Time.timeScale = 1;
     }
 
     void Update()
     {
         // 마우스 왼쪽 버튼 클릭 또는 스페이스바 입력 감지
+        // isPaused 상태가 아닐 때만 점프 가능
         if (!isPaused && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)))
         {
             Jump();
@@ -43,11 +45,14 @@ public class PlayerController : MonoBehaviour
 
     public void TogglePause() // UI 버튼에서 호출할 수 있도록 public으로 변경
     {
+        
+        
+
         isPaused = !isPaused; // 상태 반전
 
         if (isPaused)
         {
-            // 일시 정지: 시간 흐름을 멈추고 패널을 표시합니다.
+            // 일시 정지: 시간 흐름을 멈추고 패널을 표시
             Time.timeScale = 0f;
             if (pausePanel != null)
             {
@@ -57,7 +62,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // 재개: 시간 흐름을 다시 시작하고 패널을 숨깁니다.
+            // 재개: 시간 흐름을 다시 시작하고 패널을 숨김
             Time.timeScale = 1f;
             if (pausePanel != null)
             {
@@ -77,6 +82,7 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         // 충돌한 오브젝트의 태그가 "Pipe"인지 확인
+        // isPaused 상태 체크를 추가하여, 일시 정지 중에 발생한 충돌은 무시
         if (collision.gameObject.tag == "Pipe")
         {
             Die(); // "Pipe" 태그와 충돌하면 사망 처리 함수 호출
@@ -93,8 +99,15 @@ public class PlayerController : MonoBehaviour
         // 2. 물리 동작을 멈추기 위해 Rigidbody2D 비활성화
         rb.simulated = false;
 
-        // 3. 게임 오버 처리를 위해 게임 시간 전체를 멈춤
-        Time.timeScale = 0;
-
+        // 3. (수정됨) GameManager를 호출하여 게임 오버 처리를 위임
+        // GameManager.Instance의 GameOver() 메서드가 Time.timeScale = 0f 설정 및 UI 표시를 담당
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameOver();
+        }
+        else
+        {
+            Debug.LogError("GameManager 인스턴스를 찾을 수 없습니다! 게임 오버 처리에 실패했습니다.");
+        }
     }
 }
