@@ -613,6 +613,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -155588967
       objectReference: {fileID: 0}
+    - target: {fileID: 3388748565425297761, guid: 04c9b23518ecb2248a50034b4905fb24, type: 3}
+      propertyPath: backGroundspeed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3821603590455253439, guid: 04c9b23518ecb2248a50034b4905fb24, type: 3}
       propertyPath: m_SortingLayer
       value: 1
