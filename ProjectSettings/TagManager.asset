@@ -44,3 +44,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BackGround
+    uniqueID: 2849947289
+    locked: 0
+  - name: Pipe
+    uniqueID: 525404857
+    locked: 0
+  - name: Player
+    uniqueID: 694911133
+    locked: 0
