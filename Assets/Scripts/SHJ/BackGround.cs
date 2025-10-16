@@ -24,17 +24,23 @@ public class BackGround : MonoBehaviour
         transform.position += Vector3.left * backGroundspeed * Time.deltaTime;
 
         //endIndex에 있는 스프라이트가 화면 밑으로 완전히 벗어나면
-        if (backGroundSprites[backGroundstartIndex].position.x < -backGround)
+        if (backGroundSprites[backGroundendIndex].position.x < -backGround)
         {
             backGroundSprites[backGroundendIndex].localPosition = backGroundSprites[backGroundstartIndex].localPosition + Vector3.right * backGround;
 
 
             int temp = backGroundstartIndex;
             backGroundstartIndex = backGroundendIndex;
-            backGroundendIndex = temp;
+            backGroundendIndex = (backGroundendIndex - 1 + backGroundSprites.Length) % backGroundSprites.Length; // 이전 스프라이트로 이동
+            if (backGroundendIndex == temp) // startIndex와 endIndex가 같아지지 않도록
+            {
+                backGroundendIndex = (backGroundendIndex - 1 + backGroundSprites.Length) % backGroundSprites.Length;
+            }
 
 
-            
+            //(startIndex,endIndex)
+
+
         }
     }
 }
