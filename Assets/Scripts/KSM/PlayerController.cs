@@ -31,4 +31,28 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 충돌한 오브젝트의 태그가 "Pipe"인지 확인
+        if (collision.gameObject.tag == "Pipe")
+        {
+            Die(); // "Pipe" 태그와 충돌하면 사망 처리 함수 호출
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("게임 오버! 파이프와 충돌했습니다.");
+
+        // 1. 플레이어 조작을 막기 위해 현재 스크립트 비활성화
+        enabled = false;
+
+        // 2. 물리 동작을 멈추기 위해 Rigidbody2D 비활성화
+        rb.simulated = false;
+
+        // 3. 게임 오버 처리를 위해 게임 시간 전체를 멈춤
+        Time.timeScale = 0;
+
+    }
 }
