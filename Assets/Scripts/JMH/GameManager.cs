@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     {
         score += amount;
         scoreText.text = score.ToString();
+
     }
 
     public void GameOver()
@@ -39,6 +40,22 @@ public class GameManager : MonoBehaviour
             bestScore = score; //bestScore를 score로 업데이트
         }
         bestScoreText.text = $"{bestScore}";
+    }
+    //추가 내용
+    void OnEnable()
+    {
+        
+       PlayerController.OnDied += GameOver;
+
+       
+    }
+//추가 내용
+    void OnDisable()
+    {
+        // 스크립트가 비활성화될 때 구독을 해제하여 오류를 방지
+       PlayerController.OnDied -= GameOver;
+
+       
     }
 
     public void RestartGame()
