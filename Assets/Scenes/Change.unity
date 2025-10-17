@@ -177,6 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad651558c5c26d4a842455f63bb6c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameManager: {fileID: 2089489162}
+  itsReset: 0
   jumpForce: 5
   explosionPrefab: {fileID: 7238034607294222034, guid: a56e50053d6877c4c8f4c609ab54612c, type: 3}
 --- !u!50 &385729842
@@ -590,7 +592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7872680804731878706, guid: 529b61745d3013b4aa323ec68411c161, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -1095,6 +1097,8 @@ MonoBehaviour:
   gameOverUI: {fileID: 1066858327}
   finalScoreText: {fileID: 380905988352063764}
   bestScoreText: {fileID: 5005059664094310993}
+  itsReset: 0
+  gameManager: {fileID: 0}
 --- !u!4 &2089489163
 Transform:
   m_ObjectHideFlags: 0

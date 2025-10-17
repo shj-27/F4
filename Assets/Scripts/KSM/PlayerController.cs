@@ -11,6 +11,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameManager GameManager;
     public bool itsReset;
     // 점프 힘 (Inspector에서 조절)
     public float jumpForce = 5f;
@@ -19,24 +20,21 @@ public class PlayerController : MonoBehaviour
     public GameObject explosionPrefab;
 
     private Rigidbody2D rb;
+    
 
     // 게임 오버를 외부에 알리는 이벤트
     public static event System.Action OnDied;
 
-    // ------------------
-    // 1. 초기화 (Start)
-    // ------------------
+   
     void Start()
     {
+        
         itsReset = false;
         // Rigidbody2D 컴포넌트 참조
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = Vector2.zero;
     }
 
-    // ------------------
-    // 2. 입력 처리 (Update)
-    // ------------------
     void Update()
     {
         // 마우스 클릭 또는 스페이스바 입력 감지
@@ -47,12 +45,26 @@ public class PlayerController : MonoBehaviour
             {
                 Flap();
             }
+
+        
+
         }
+        if ((itsReset == true) && Input.GetKeyDown(KeyCode.R)) 
+        {
+            Reset();
+        }
+        
+
     }
 
-    // ------------------
-    // 3. 점프 로직 (Flap)
-    // ------------------
+    
+    
+    private void Reset()
+    {
+            SceneManager.LoadScene("Change");
+        
+    }
+    
     void Flap()
     {
         // 현재 속도 초기화 (이전 관성 제거)
@@ -62,15 +74,15 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
-    // ------------------
-    // 4. 충돌 처리 (OnCollisionEnter2D)
-    // ------------------
+  
+    // 충돌 처리 (OnCollisionEnter2D)
+   
     void OnCollisionEnter2D(Collision2D collision)
     {
         // 파이프, 바닥 등 충돌 시 '죽음' 함수 호출
         Die();
-        itsReset = true;
-        if (itsReset == true)
+        GameManager.itsReset = true;
+        if (collision.collider.CompareTag("Pipe"))
         {
             GameManager gameManager = FindObjectOfType<GameManager>();
             gameManager.RestartGame();
@@ -78,9 +90,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ------------------
-    // 5. 죽음 / 게임 오버 로직 (Die)
-    // ------------------
+    
+    // 죽음 / 게임 오버 로직 (Die)
+    
     void Die()
     {
         // 이미 죽은 상태가 아닌지 확인

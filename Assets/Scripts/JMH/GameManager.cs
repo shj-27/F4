@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverUI; //게임오버 UI 캔버스
     public TextMeshProUGUI finalScoreText; //점수 텍스트
     public TextMeshProUGUI bestScoreText; //최고 점수 텍스트
-
+    public bool itsReset;
+    public GameManager gameManager;
     void Awake()
     {
         if (Instance == null)
@@ -26,7 +27,14 @@ public class GameManager : MonoBehaviour
         scoreText.text = $"Score:{score}";
 
     }
-
+    private void Update()
+    {
+        if ((Input.GetKeyDown(KeyCode.R)) && itsReset == true)
+        {
+            SceneManager.LoadScene("Change");
+            Time.timeScale = 1.0f;
+        }
+    }
     public void GameOver()
     {
         Time.timeScale = 0f;
@@ -60,12 +68,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene("Change");
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //SceneManager는 유니티 게임 내에서 씬을 관리하는 시스템
-        }
+        itsReset = true;
     }
 
     public void QuitGame()
