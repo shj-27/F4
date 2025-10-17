@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
    
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // 파이프, 바닥 등 충돌 시 '죽음' 함수 호출
+        // 파이프, 바닥 등 충돌 시 '죽음' 
         Die();
         GameManager.itsReset = true;
         if (collision.collider.CompareTag("Pipe"))
@@ -98,11 +98,11 @@ public class PlayerController : MonoBehaviour
         // 이미 죽은 상태가 아닌지 확인
         if (rb != null && !rb.isKinematic)
         {
-            // (a) 물리 엔진 비활성화 및 움직임 멈춤
+            // 물리 엔진 비활성화 및 움직임 멈춤
             rb.isKinematic = true;
             rb.velocity = Vector2.zero;
 
-            // (b) 폭발 효과 생성
+            // 폭발 효과 생성
             if (explosionPrefab != null)
             {
                 GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
@@ -111,10 +111,10 @@ public class PlayerController : MonoBehaviour
             }
 
 
-            // (c) 새 오브젝트 숨기기
+            // 새 오브젝트 숨기기
             gameObject.SetActive(false);
 
-            // (d) 게임 매니저에 게임 오버 알림
+            // 게임 매니저에 게임 오버 알림
             OnDied?.Invoke();
 
         }

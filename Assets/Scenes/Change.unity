@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 385729841}
   - component: {fileID: 385729840}
   m_Layer: 0
-  m_Name: c979cd9c-2ade-Game-sprite-sheet-wi-1760597484319-removebg-preview_17
+  m_Name: Daram
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -677,7 +677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f937bcf8611ee41479000c9ca3b1d28c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pipePairPrefab: {fileID: 7749368835138418236}
+  pipePairPrefab: {fileID: 1678698154}
   poolSize: 5
   spawnRate: 2.5
   spawnX: 10
@@ -994,6 +994,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1678698154 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7749368834519351895, guid: 11fb48b95bc2c5647879908d1db23717, type: 3}
+  m_PrefabInstance: {fileID: 1891963295}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1709494776
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,6 +1108,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 232645525398807233, guid: 11fb48b95bc2c5647879908d1db23717, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 232645525398807233, guid: 11fb48b95bc2c5647879908d1db23717, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.22
       objectReference: {fileID: 0}
@@ -1171,6 +1180,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7190867792334046463, guid: 11fb48b95bc2c5647879908d1db23717, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7190867792334046463, guid: 11fb48b95bc2c5647879908d1db23717, type: 3}
       propertyPath: m_LocalPosition.y
       value: -7.22
       objectReference: {fileID: 0}
@@ -1183,8 +1196,16 @@ PrefabInstance:
       value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7971754588892502406, guid: 11fb48b95bc2c5647879908d1db23717, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7971754588892502406, guid: 11fb48b95bc2c5647879908d1db23717, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 8007369874088086151, guid: 11fb48b95bc2c5647879908d1db23717, type: 3}
+      propertyPath: speed
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
