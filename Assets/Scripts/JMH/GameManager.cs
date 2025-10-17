@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int amount)
     {
         score += amount;
-        scoreText.text = score.ToString();
+        scoreText.text = $"Score: {score}";
     }
 
     public void GameOver()
