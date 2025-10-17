@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("Change");
             Time.timeScale = 1.0f;
         }
+
+        QuitGame();
     }
     public void GameOver()
     {
@@ -73,8 +75,12 @@ public class GameManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit(); //Application은 유니티 게임 내에서 애플리케이션을 관리하는 시스템
-           
+         //Application은 유니티 게임 내에서 애플리케이션을 관리하는 시스템
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+            Debug.Log("게임 종료");
+        }
     }
 
    

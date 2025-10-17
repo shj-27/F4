@@ -53,8 +53,8 @@ public class PlayerController : MonoBehaviour
         {
             Reset();
         }
-        
 
+        
     }
 
     
