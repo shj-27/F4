@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int amount)
     {
         score += amount;
-        scoreText.text = score.ToString();
+        scoreText.text = $"Score:{score}";
 
     }
 
@@ -32,14 +32,14 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         gameOverUI.SetActive(true);
 
-        finalScoreText.text = $"{score}";
+        finalScoreText.text = $"Finalscore : {score}";
         int bestScore = PlayerPrefs.GetInt("BestScore", 0); //PlayerPrefs는 유니티 게임 내에서 데이터를 저장하는 시스템
         if (score > bestScore) //score가 bestScore보다 크면
         {
             PlayerPrefs.SetInt("BestScore", score); //BestScore 키에 score 값을 저장
             bestScore = score; //bestScore를 score로 업데이트
         }
-        bestScoreText.text = $"{bestScore}";
+        bestScoreText.text = $"Bestscore : {bestScore}";
     }
     //추가 내용
     void OnEnable()
@@ -60,12 +60,19 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //SceneManager는 유니티 게임 내에서 씬을 관리하는 시스템
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("Change");
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //SceneManager는 유니티 게임 내에서 씬을 관리하는 시스템
+        }
     }
 
     public void QuitGame()
     {
         Application.Quit(); //Application은 유니티 게임 내에서 애플리케이션을 관리하는 시스템
+           
     }
+
+   
 }

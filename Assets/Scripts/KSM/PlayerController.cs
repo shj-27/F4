@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 
@@ -10,7 +11,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public bool itsReset;
     // 점프 힘 (Inspector에서 조절)
     public float jumpForce = 5f;
 
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     // ------------------
     void Start()
     {
+        itsReset = false;
         // Rigidbody2D 컴포넌트 참조
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = Vector2.zero;
@@ -67,6 +69,13 @@ public class PlayerController : MonoBehaviour
     {
         // 파이프, 바닥 등 충돌 시 '죽음' 함수 호출
         Die();
+        itsReset = true;
+        if (itsReset == true)
+        {
+            GameManager gameManager = FindObjectOfType<GameManager>();
+            gameManager.RestartGame();
+            Debug.Log("발동됨");
+        }
     }
 
     // ------------------
@@ -89,11 +98,13 @@ public class PlayerController : MonoBehaviour
                 Destroy(explosion, 2.0f);
             }
 
+
             // (c) 새 오브젝트 숨기기
             gameObject.SetActive(false);
 
             // (d) 게임 매니저에 게임 오버 알림
             OnDied?.Invoke();
+
         }
     }
 }
