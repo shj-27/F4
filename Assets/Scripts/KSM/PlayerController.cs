@@ -1,113 +1,99 @@
 using System.Collections;
+
 using System.Collections.Generic;
+
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
+
+
+
 
 public class PlayerController : MonoBehaviour
 {
-    public float jumpForce = 5f; // 점프 힘 설정
+
+    // 점프 힘 (Inspector에서 조절)
+    public float jumpForce = 5f;
+
+    // 폭발 프리팹 (Inspector에서 할당)
+    public GameObject explosionPrefab;
+
     private Rigidbody2D rb;
 
-    [Header("Pause Settings")]
-    // 환경 설정(Pause) 패널 UI를 연결할 변수입니다.
-    public GameObject pausePanel;
-    private bool isPaused = false; // 현재 게임이 일시 정지 상태인지 확인
+    // 게임 오버를 외부에 알리는 이벤트
+    public static event System.Action OnDied;
 
+    // ------------------
+    // 1. 초기화 (Start)
+    // ------------------
     void Start()
     {
+        // Rigidbody2D 컴포넌트 참조
         rb = GetComponent<Rigidbody2D>();
-
-        if (pausePanel != null)
-        {
-            pausePanel.SetActive(false);
-        }
-        // 게임 시작 시 TimeScale을 1로 설정 (GameManager의 RestartGame도 동일하게 동작해야 함)
-        Time.timeScale = 1;
+        rb.velocity = Vector2.zero;
     }
 
+    // ------------------
+    // 2. 입력 처리 (Update)
+    // ------------------
     void Update()
     {
-        // 마우스 왼쪽 버튼 클릭 또는 스페이스바 입력 감지
-        // isPaused 상태가 아닐 때만 점프 가능
-        if (!isPaused && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)))
+        // 마우스 클릭 또는 스페이스바 입력 감지
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
-            Jump();
-        }
-
-        // 새의 회전
-        // 새의 현재 수직 속도에 따라 위아래로 회전하도록 설정
-        transform.rotation = Quaternion.Euler(0, 0, rb.velocity.y * 3f);
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            TogglePause();
+            // 새가 살아있을 때만 점프 가능하도록 체크
+            if (rb != null && !rb.isKinematic)
+            {
+                Flap();
+            }
         }
     }
 
-    public void TogglePause() // UI 버튼에서 호출할 수 있도록 public으로 변경
+    // ------------------
+    // 3. 점프 로직 (Flap)
+    // ------------------
+    void Flap()
     {
-        
-        
-
-        isPaused = !isPaused; // 상태 반전
-
-        if (isPaused)
-        {
-            // 일시 정지: 시간 흐름을 멈추고 패널을 표시
-            Time.timeScale = 0f;
-            if (pausePanel != null)
-            {
-                pausePanel.SetActive(true);
-            }
-            Debug.Log("게임 일시 정지 (ESC)");
-        }
-        else
-        {
-            // 재개: 시간 흐름을 다시 시작하고 패널을 숨김
-            Time.timeScale = 1f;
-            if (pausePanel != null)
-            {
-                pausePanel.SetActive(false);
-            }
-            Debug.Log("게임 재개 (ESC)");
-        }
-    }
-
-    void Jump()
-    {
-        // 기존 속도 제거 후 위쪽 방향으로 힘 가하기
+        // 현재 속도 초기화 (이전 관성 제거)
         rb.velocity = Vector2.zero;
+
+        // 위쪽으로 순간적인 힘 가하기
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
+    // ------------------
+    // 4. 충돌 처리 (OnCollisionEnter2D)
+    // ------------------
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // 충돌한 오브젝트의 태그가 "Pipe"인지 확인
-        // isPaused 상태 체크를 추가하여, 일시 정지 중에 발생한 충돌은 무시
-        if (collision.gameObject.tag == "Pipe")
-        {
-            Die(); // "Pipe" 태그와 충돌하면 사망 처리 함수 호출
-        }
+        // 파이프, 바닥 등 충돌 시 '죽음' 함수 호출
+        Die();
     }
 
+    // ------------------
+    // 5. 죽음 / 게임 오버 로직 (Die)
+    // ------------------
     void Die()
     {
-        Debug.Log("게임 오버! 파이프와 충돌했습니다.");
-
-        // 1. 플레이어 조작을 막기 위해 현재 스크립트 비활성화
-        enabled = false;
-
-        // 2. 물리 동작을 멈추기 위해 Rigidbody2D 비활성화
-        rb.simulated = false;
-
-        // 3. (수정됨) GameManager를 호출하여 게임 오버 처리를 위임
-        // GameManager.Instance의 GameOver() 메서드가 Time.timeScale = 0f 설정 및 UI 표시를 담당
-        if (GameManager.Instance != null)
+        // 이미 죽은 상태가 아닌지 확인
+        if (rb != null && !rb.isKinematic)
         {
-            GameManager.Instance.GameOver();
-        }
-        else
-        {
-            Debug.LogError("GameManager 인스턴스를 찾을 수 없습니다! 게임 오버 처리에 실패했습니다.");
+            // (a) 물리 엔진 비활성화 및 움직임 멈춤
+            rb.isKinematic = true;
+            rb.velocity = Vector2.zero;
+
+            // (b) 폭발 효과 생성
+            if (explosionPrefab != null)
+            {
+                GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+                // 폭발 애니메이션 재생 시간만큼 후 오브젝트 파괴
+                Destroy(explosion, 2.0f);
+            }
+
+            // (c) 새 오브젝트 숨기기
+            gameObject.SetActive(false);
+
+            // (d) 게임 매니저에 게임 오버 알림
+            OnDied?.Invoke();
         }
     }
 }
