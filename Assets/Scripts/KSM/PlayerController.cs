@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
     {
         // 파이프, 바닥 등 충돌 시 '죽음' 함수 호출
         Die();
-        GameManager.itsReset = true;
+      
         if (collision.collider.CompareTag("Pipe"))
         {
             GameManager gameManager = FindObjectOfType<GameManager>();
