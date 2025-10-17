@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     {
         score += amount;
         scoreText.text = score.ToString();
+
     }
 
     public void GameOver()
