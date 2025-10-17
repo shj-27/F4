@@ -26,6 +26,12 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
+    public float GetDifficultyMultiplier()
+    {
+        // 예: 1000점마다 난이도 1씩 증가
+        return 1f + (score / 1000f);
+    }
+
     public void GameOver()
     {
         Time.timeScale = 0f;
